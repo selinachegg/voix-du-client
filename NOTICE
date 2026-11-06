@@ -1,0 +1,7 @@
+Éléments de tiers (hors de la licence du dépôt)
+
+- Corpus Gridspace-Stanford Harper Valley : CC BY 4.0,
+  https://github.com/cricketclub/gridspace-stanford-harper-valley
+  Le corpus n'est pas inclus ; les notebooks le téléchargent et en affichent des résultats.
+- Bibliothèques et modèles appelés par les notebooks : soumis à leurs propres licences.
+- Noms et marques cités : propriété de leurs détenteurs respectifs.

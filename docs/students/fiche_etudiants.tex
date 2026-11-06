@@ -1,0 +1,174 @@
+\documentclass[11pt,a4paper]{article}
+\newcommand{\doctype}{Fiche étudiants}
+\input{../style_bleu}
+\setlength{\parindent}{0pt}
+
+% card : grande carte de comparaison ; bloc : encadré d'étape (style stepbox de la référence)
+\newtcolorbox{card}[2]{colback=white, colframe=#1, coltitle=white, colbacktitle=#1,
+  fonttitle=\bfseries\large, title={#2}, arc=3pt, boxrule=1pt, equal height group=cards,
+  before upper=\raggedright}
+\newtcolorbox{bloc}[2][sectioncolor]{colback=white, colframe=#1, coltitle=white,
+  colbacktitle=#1, fonttitle=\bfseries, title={#2}, arc=3pt, boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt}
+
+\newcommand{\chiffre}[1]{{\Large\bfseries\color{darkblue} #1}}
+
+\begin{document}
+
+\pagedetitre{École d'automne IA, Alsace Tech}{Hackathon voix du client}
+  {Fiches 1 à 4}{Ton GPU gratuit, puis les séances 1 à 3 du TP}
+  {allumer un GPU gratuit sans gaspiller ton quota, puis vérifier tes données avant d'entraîner quoi que ce soit.}
+
+\vuedensemble
+
+\section{Ton GPU gratuit en ligne}
+
+\begin{tcolorbox}[colback=notebg,colframe=sectioncolor,arc=3pt,halign=center,boxrule=1.5pt]
+{\LARGE\faServer\quad\bfseries On travaille sur \textcolor{sectioncolor}{KAGGLE}.}\quad
+{\large Colab sert seulement de secours.}
+\end{tcolorbox}
+
+\begin{tcbraster}[raster columns=2,raster equal height,raster column skip=8pt]
+\begin{card}{sectioncolor}{\faTrophy\ Kaggle}
+\begin{itemize}[leftmargin=1.3em,itemsep=3pt]
+\item[\faMicrochip] \chiffre{2 × T4}, 16 Go chacune
+\item[\faMemory] environ \chiffre{29 Go} de RAM
+\item[\faClock] \chiffre{12 h} par session
+\item[\faBatteryHalf] environ \chiffre{30 h} de GPU par semaine
+\item[\faPlayCircle] tourne \textbf{en arrière-plan} (\og Save \& Run All \fg)
+\item[\faSave] garde tes fichiers dans \texttt{/kaggle/working}
+\end{itemize}
+\end{card}
+\begin{card}{slate}{\faLifeRing\ Colab gratuit (secours)}
+\begin{itemize}[leftmargin=1.3em,itemsep=3pt]
+\item[\faMicrochip] \chiffre{1 × T4}, 16 Go, \textbf{pas garantie}
+\item[\faMemory] environ \chiffre{12,7 Go} de RAM
+\item[\faClock] \chiffre{12 h} au plus, souvent moins
+\item[\faQuestionCircle] quota \textbf{inconnu}, il change
+\item[\faEye] l'onglet doit \textbf{rester ouvert}
+\item[\faTrash] fichiers \textbf{perdus} sans copie vers Drive
+\end{itemize}
+\end{card}
+\end{tcbraster}
+
+\vspace{4pt}
+\begin{bloc}[darkblue]{\faCalendarCheck\quad À faire AVANT le hackathon}
+\begin{tikzpicture}[
+  etape/.style={draw=darkblue,fill=white,rounded corners=4pt,minimum width=3.6cm,minimum height=1.5cm,
+    align=center,font=\small,text width=3.4cm},
+  arr/.style={-{Stealth[length=3mm]},very thick,color=darkblue}]
+\node[etape] (a) {{\Large\faUserPlus}\\Créer un compte\\\textbf{kaggle.com}};
+\node[etape,right=0.35cm of a] (b) {{\Large\faMobile*}\\\textbf{Vérifier ton téléphone}\\(sinon : ni GPU ni Internet)};
+\node[etape,right=0.35cm of b] (c) {{\Large\faKey}\\Compte \textbf{Hugging Face}\\+ jeton de lecture};
+\node[etape,right=0.35cm of c] (d) {{\Large\faCheckSquare}\\Accepter les conditions\\du modèle de \textbf{diarisation}};
+\draw[arr] (a) -- (b); \draw[arr] (b) -- (c); \draw[arr] (c) -- (d);
+\end{tikzpicture}
+\end{bloc}
+
+\vspace{2pt}
+\begin{bloc}{\faPowerOff\quad Allumer le GPU, en 4 clics}
+\begin{tikzpicture}[
+  num/.style={circle,fill=sectioncolor,text=white,font=\bfseries\Large,minimum size=0.9cm},
+  lab/.style={align=center,font=\small,text width=3.6cm},
+  arr/.style={-{Stealth[length=3mm]},very thick,color=sectioncolor}]
+\node[num] (n1) {1};
+\node[num,right=3.0cm of n1] (n2) {2};
+\node[num,right=3.0cm of n2] (n3) {3};
+\node[num,right=3.0cm of n3] (n4) {4};
+\node[lab,below=2pt of n1] {\textbf{Create} \faArrowRight\ \textbf{New Notebook}};
+\node[lab,below=2pt of n2] {Panneau de droite :\\\textbf{Session options}};
+\node[lab,below=2pt of n3] {\textbf{Accelerator}\\\faArrowRight\ \textbf{GPU T4 x2}};
+\node[lab,below=2pt of n4] {\textbf{Internet}\\\faToggleOn\ \textbf{On}};
+\draw[arr] (n1) -- (n2); \draw[arr] (n2) -- (n3); \draw[arr] (n3) -- (n4);
+\end{tikzpicture}
+\end{bloc}
+
+\vspace{2pt}
+\begin{bloc}[accentblue]{\faTerminal\quad Ta première cellule : vérifie ta machine}
+\begin{minipage}[t]{0.55\linewidth}
+\begin{lstlisting}
+!nvidia-smi
+!free -h
+import torch
+print(torch.cuda.device_count())
+print(torch.cuda.get_device_name(0))
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}
+\vspace{2pt}
+\textbf{\textcolor{accentblue}{\faCheckCircle\ Tu dois voir :}}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item deux lignes \texttt{Tesla T4}
+\item \texttt{2}
+\item \texttt{Tesla T4}
+\end{itemize}
+\textbf{\textcolor{sectioncolor}{\faTimesCircle\ Tu vois \texttt{0} ?}}\\
+Reprends l'étape 3, puis vérifie ton téléphone.
+\end{minipage}
+\end{bloc}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PAGE 2
+\section{Les 5 règles d'or du GPU}
+
+\begin{tikzpicture}[
+  rule/.style={draw=#1,fill=#1!10,rounded corners=5pt,minimum height=2.1cm,
+    text width=7.55cm,align=left,font=\normalsize,inner sep=8pt},
+  ico/.style={font=\Huge,color=#1}]
+\node[rule=sectioncolor] (r1) at (0,0) {\hspace{1.4cm}\parbox{5.95cm}{\textbf{Transcris UNE fois.}\\
+  Sauvegarde le résultat, puis travaille toujours sur les fichiers sauvegardés.}};
+\node[ico=sectioncolor] at ($(r1.west)+(0.8,0)$) {\faSave};
+\node[rule=lightblue,right=0.3cm of r1] (r2) {\hspace{1.4cm}\parbox{5.95cm}{\textbf{Arrête ta session.}\\
+  Une session ouverte mange ton quota, même si rien ne tourne.}};
+\node[ico=lightblue] at ($(r2.west)+(0.8,0)$) {\faStopCircle};
+\node[rule=darkblue,below=0.3cm of r1] (r3) {\hspace{1.4cm}\parbox{5.95cm}{\textbf{Calcul long ?}\\
+  \og Save \& Run All \fg{} : ça tourne seul, tu peux fermer l'onglet.}};
+\node[ico=darkblue] at ($(r3.west)+(0.8,0)$) {\faRocket};
+\node[rule=accentblue,below=0.3cm of r2] (r4) {\hspace{1.4cm}\parbox{5.95cm}{\textbf{T4 = \texttt{fp16}.}\\
+  Jamais \texttt{bf16}, jamais FlashAttention.}};
+\node[ico=accentblue] at ($(r4.west)+(0.8,0)$) {\faThermometerHalf};
+\node[rule=slate,below=0.3cm of r3,text width=15.96cm,xshift=4.2cm] (r5)
+  {\hspace{1.4cm}\parbox{13.9cm}{\textbf{2 × T4 = deux cartes de 16 Go, PAS une carte de 32 Go.}\\
+  Pour aller deux fois plus vite : coupe ta liste d'appels en deux, un processus par carte (code ci-dessous).}};
+\node[ico=slate] at ($(r5.west)+(0.8,0)$) {\faCopy};
+\end{tikzpicture}
+
+\vspace{8pt}
+\begin{bloc}{\faCode\quad Utiliser les deux GPU : un processus par carte}
+\begin{lstlisting}
+import subprocess, os
+procs = []
+for gpu in (0, 1):
+    env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu))   # ce processus ne voit qu'UNE carte
+    procs.append(subprocess.Popen(
+        ["python", "transcrire.py", "--part", str(gpu), "--nparts", "2"], env=env))
+for p in procs:
+    p.wait()                                                  # on attend les deux moitiés
+\end{lstlisting}
+\end{bloc}
+
+\vspace{4pt}
+\begin{bloc}[sectioncolor]{\faWrench\quad Ça plante ? Cherche ton message ici}
+\renewcommand{\arraystretch}{1.5}\rowcolors{2}{notebg}{white}
+\begin{tabularx}{\linewidth}{>{\ttfamily\small}p{5.8cm}X}
+\rowcolor{titlebg}\color{white}\textbf{\normalfont Tu vois\ldots} & \color{white}\textbf{Tu fais\ldots} \\
+device\_count() == 0 & \faArrowRight\ Accelerator : GPU T4 x2. Téléphone vérifié ? \\
+pip : erreur réseau & \faArrowRight\ Session options : Internet \faToggleOn\ On \\
+CUDA out of memory & \faArrowRight\ \texttt{batch\_size=4} \\
+bfloat16 / bf16 & \faArrowRight\ remplace par \texttt{fp16=True} \\
+flash\_attn / flash\_attention\_2 & \faArrowRight\ supprime l'option \texttt{attn\_implementation} \\
+diarisation : 401 / gated / token & \faArrowRight\ jeton Hugging Face + conditions acceptées sur la page du modèle \\
+quota épuisé & \faArrowRight\ un coéquipier lance le calcul depuis son compte \\
+\end{tabularx}
+\end{bloc}
+
+\vfill
+\begin{center}\color{slate}\small
+\faUserTie\quad Une question ? Lève la main, l'encadrante passe.
+\end{center}
+
+\input{fiche2_seance1}
+\input{fiche3_seance2}
+\input{fiche4_seance3}
+
+\end{document}
