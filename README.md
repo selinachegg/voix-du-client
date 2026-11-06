@@ -1,7 +1,10 @@
 # Voix du client
 
-Analyse d'appels de centre de contact : du signal audio à la transcription, puis à la
-classification. Projet conçu par Selina Cheggour pour l'École d'automne IA 2026.
+Analyse d'appels de centre de contact, de l'enregistrement à l'étude d'ablation. Projet conçu
+par Selina Cheggour pour l'École d'automne IA 2026.
+
+*Contact-centre call analysis, from the raw recording to an ablation study, on the public
+Gridspace-Stanford Harper Valley corpus. Designed by Selina Cheggour for the 2026 AI Fall School.*
 
 | Dossier | Contenu |
 |---|---|
